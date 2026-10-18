@@ -33,6 +33,23 @@ Model input (in order)
 
 **Model processing:** Reuse the eligible cached prefix, then process the new input.
 
+```mermaid
+flowchart TD
+    subgraph input["Model input (in order)"]
+        direction TB
+        prefix["**Eligible for cache reuse**<br/>Unchanged prefix<br/>System instructions<br/>Repository instructions<br/>Unchanged source code<br/>Previous conversation"]
+        newContext["**New context**<br/>Latest user request<br/>New tool results<br/>Changed files"]
+        prefix --> newContext
+        newContext --> results["Results of new context request"]
+        results --Add to previous conversation-->prefix
+    end
+
+
+    style prefix fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    style newContext fill:#fff3e0,stroke:#ef6c00,color:#8a3d00
+    style results fill:#fff3e0,stroke:#ef6c00,color:#8a3d00
+```
+
 Caching can reduce latency and cost, but it does not increase the model's context window or eliminate the need to manage context carefully.
 
 ### 1.2 Keep stable instructions consistent
@@ -108,7 +125,9 @@ Where usage metrics are available, evaluate:
 
 A useful metric is:
 
-\\[ \text{Cache hit rate} = \frac{\text{Cached input tokens}}{\text{Total input tokens}}\times100\\% \\]
+$$
+\text{Cache hit rate} = \frac{\text{Cached input tokens}}{\text{Total input tokens}}\times100\\% 
+$$
 
 A high cache-hit rate is not necessarily optimal if the agent is repeatedly processing excessive context.
 
@@ -341,21 +360,32 @@ Claude Code recommendation: Keep project instructions stable, avoid unnecessary 
 
 Consider a coding assistant repeatedly processing 20,000 tokens of stable context across 10 requests.
 
-Illustrative input-processing cost, in uncached-token equivalents
+**Illustrative input-processing cost, in uncached-token equivalents**
 
-Without caching
+| Without caching | With caching |
+|---|---|
+| **200,000** | **43,000** |
 
-# 200,000
+```mermaid
+---
+config:
+  themeVariables:
+    xyChart:
+      plotColorPalette: "#5297F5"
+---
+xychart-beta
+    x-axis ["No caching", "Caching"]
+    y-axis 0 --> 220000
+    bar [200000, 43000]
+```
 
-With caching
+*Assumes first request is a 5-minute cache write at 1.25× and nine
+requests are cache reads at 0.10×. Excludes dynamic context and output.*
 
-# 43,000
+Under these assumptions, caching reduces input-processing cost for the
+stable context by approximately **78.5%**. Actual savings depend on reuse,
+cache expiration, provider pricing, and other tokens processed.
 
-055,000110,000165,000220,000No cachingCaching
-
-Assumes first request is a 5-minute cache write at 1.25× and nine requests are cache reads at 0.10×. Excludes dynamic context and output.
-
-Under these assumptions, caching reduces input-processing cost for the stable context by approximately 78.5%. Actual savings depend on reuse, cache expiration, provider pricing, and other tokens processed.
 
 This example illustrates why long-running agentic coding sessions can benefit substantially from prompt caching.
 
