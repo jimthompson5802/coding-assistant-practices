@@ -16,21 +16,22 @@ Unlike context window compaction, which reduces the amount of context retained, 
 
 Prompt caching typically reuses a previously processed prefix of the model's input.
 
-Illustrative coding assistant request
+### Illustrative coding assistant request
 
-Stable context
+```text
+Model input (in order)
+├── Unchanged prefix → eligible for cache reuse
+│   ├── System instructions
+│   ├── Repository instructions
+│   ├── Unchanged source code
+│   └── Previous conversation
+└── New context → processed as new input
+    ├── Latest user request
+    ├── New tool results
+    └── Changed files
+```
 
-Potential cache reuse
-
-System instructions, repository instructions, unchanged source code, previous conversation
-
-New context
-
-Latest user request, new tool results, changed files
-
-Model processes the request
-
-Reuses eligible cached input and processes new input
+**Model processing:** Reuse the eligible cached prefix, then process the new input.
 
 Caching can reduce latency and cost, but it does not increase the model's context window or eliminate the need to manage context carefully.
 
