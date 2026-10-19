@@ -1,4 +1,27 @@
-# Token counters
+# Coding Assistant Guidance
+
+This repository collects practical guidance for using GitHub Copilot, Codex, and
+Claude Code effectively. The guides cover prompt caching, context window
+management, model selection, and subagent workflows. Python utilities help you
+measure recorded token usage from local Codex and GitHub Copilot logs, including
+cached input totals and cache reuse percentages.
+
+## Practical Guides
+
+- [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
+  preserving reusable context, measuring cache benefits, and caching costs.
+- [Context window management](context-window-management.md): Covers focused
+  context loading, compaction, persistent instructions, and session handoffs.
+- [Model selection guidance](model-selection-guidance.md): Describes choosing
+  models and reasoning effort by task complexity, balancing cost and quality,
+  and evaluating models on your codebase.
+- [Subagent practices](subagent-practices.md): Covers bounded delegation,
+  parallel work, context isolation, permissions, integration, and validation.
+
+Each guide includes practices for GitHub Copilot, Codex, and Claude Code, along
+with comparisons and reusable policies.
+
+## Running the token counters
 
 Two Python programs report token usage from local Codex and GitHub Copilot logs.
 Both require Python 3 and use only the standard library; no packages need to be
@@ -89,10 +112,3 @@ python3 count_copilot_tokens.py --help
 Each program requires an existing directory. Unreadable files and malformed JSON
 cause an unsuccessful exit without printing partial totals. JSON errors include
 the file path and line number.
-
-## Related guidance
-
-- [Cache token guidance](cache-token-guidance.md)
-- [Context window management](context-window-management.md)
-- [Model selection guidance](model-selection-guidance.md)
-- [Subagent practices](subagent-practices.md)
