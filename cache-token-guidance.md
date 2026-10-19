@@ -143,13 +143,7 @@ A different model cannot reuse the previous model's cache.
 
 Recommendation: Select a suitable model at the beginning of a task and retain it unless a change is justified by task complexity or quality.
 
-Copilot's automatic model selection is another option, but automatic routing should not be interpreted as a guarantee that every request uses the same cache.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Enterprise Cloud Docs
-
-
+Copilot's automatic model selection is another option, but automatic routing should not be interpreted as a guarantee that every request uses the same cache.
 
 ### 2.2 Account for cache expiration
 
@@ -157,13 +151,7 @@ GitHub documents cache expiration after inactivity, citing 24 hours for OpenAI m
 
 When returning to an older session, a large conversation may need to be processed again without cached-token discounts.
 
-Consider starting a new session or compacting the old one when its history is no longer necessary.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Enterprise Cloud Docs
-
-
+Consider starting a new session or compacting the old one when its history is no longer necessary.
 
 ### 2.3 Use compaction strategically
 
@@ -177,13 +165,7 @@ Therefore, compact when reducing context is more valuable than preserving the ex
 
 GitHub's AI credit billing distinguishes ordinary input, cached input, cache writes where applicable, and output tokens.
 
-Its model pricing tables show that cached input is generally less expensive than uncached input, but cache writes may have their own charges.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-
+Its model pricing tables show that cached input is generally less expensive than uncached input, but cache writes may have their own charges.
 
 Copilot recommendation: Keep a consistent model throughout related work, avoid unnecessary session interruptions, and use compaction to manage large or expired contexts rather than trying to maximize caching at all costs.
 
@@ -200,13 +182,7 @@ OpenAI describes several Codex CLI design choices intended to preserve caching:
 - Preserve sandbox and environment configuration.
 - Append new messages rather than rewriting earlier conversation content.
 
-These choices preserve the longest possible reusable prompt prefix.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+These choices preserve the longest possible reusable prompt prefix.
 
 Most of this behavior is managed by Codex itself. Developers should avoid introducing unnecessary changes to repository instructions and runtime configuration.
 
@@ -224,13 +200,7 @@ Codex's prompt construction includes tool definitions, sandbox configuration, an
 
 OpenAI describes appending configuration changes to the conversation instead of rewriting the original prefix.
 
-For ordinary CLI use, keep model and environment settings consistent unless the task requires a change.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+For ordinary CLI use, keep model and environment settings consistent unless the task requires a change.
 
 ### 3.4 Understand compaction's effect on caching
 
@@ -246,13 +216,7 @@ If you are building your own Codex-based agent harness using the OpenAI API, add
 
 These include prompt-cache configuration, cache accounting, and explicit cache breakpoints on supported models.
 
-OpenAI's documentation also describes preserving conversation history and appending configuration changes to maintain prefix reuse.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-
+OpenAI's documentation also describes preserving conversation history and appending configuration changes to maintain prefix reuse.
 
 For newer models, account for both cache-write costs and discounted cache reads rather than assuming all cache activity is free.
 
@@ -275,13 +239,7 @@ Its standard API pricing structure includes:
 | 1-hour cache write   | 2.00×         |
 | Cache read           | 0.10×         |
 
-These multipliers describe Anthropic's documented API caching model; your effective Claude Code subscription or provider billing may differ.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.anthropic.com\&sz=32)
-
-Anthropic
-
-
+These multipliers describe Anthropic's documented API caching model; your effective Claude Code subscription or provider billing may differ.
 
 The implication is that caching becomes especially attractive when the same prefix is reused repeatedly.
 
@@ -295,13 +253,7 @@ For API-key users, Claude Code documents an environment variable for requesting 
 export ENABLE_PROMPT_CACHING_1H=1
 ```
 
-This can be useful for workflows with longer gaps between interactions, but the higher cache-write cost must be considered. Claude Code subscription users may have different default behavior.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
-
-
+This can be useful for workflows with longer gaps between interactions, but the higher cache-write cost must be considered. Claude Code subscription users may have different default behavior.
 
 Do not enable a longer cache duration automatically. Evaluate whether enough reuse occurs to justify the additional write cost.
 
@@ -319,13 +271,7 @@ Claude Code can load context from skills, MCP servers, and other extensions.
 
 Keep enabled integrations relevant to the work. Large or changing tool definitions can increase context overhead and may affect reusable prompt prefixes.
 
-Claude Code's documentation describes how different extensions contribute to context consumption.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
-
-
+Claude Code's documentation describes how different extensions contribute to context consumption.
 
 ### 4.5 Monitor token usage
 

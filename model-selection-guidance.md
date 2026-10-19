@@ -137,15 +137,7 @@ In VS Code, select Auto in the Chat model picker and choose an optimization tier
 
 I recommend starting with Auto — Balance for everyday development. Use Intelligence for difficult tasks, and manually select a model when you need predictable behavior or want to compare models.
 
-GitHub documents that paid plans receive a 10% model-cost discount when using Auto selection.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-+1
-
-
+GitHub documents that paid plans receive a 10% model-cost discount when using Auto selection.
 
 ### 2.2 Adjust thinking effort independently
 
@@ -153,13 +145,7 @@ For supported reasoning models, VS Code lets you select a thinking-effort level 
 
 Use the default or adaptive setting for routine work. Increase effort for complex refactoring, architectural trade-offs, and difficult debugging.
 
-Higher thinking effort can increase AI credit consumption.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
-
-
+Higher thinking effort can increase AI credit consumption.
 
 ### 2.3 Evaluate models across providers
 
@@ -173,13 +159,7 @@ Avoid treating the model with the most findings as the best reviewer. False posi
 
 Changing the model used by Copilot Chat does not automatically change the model used for inline code suggestions.
 
-Treat interactive agent work and inline completion as separate selection decisions.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Enterprise Cloud Docs
-
-
+Treat interactive agent work and inline completion as separate selection decisions.
 
 Copilot recommendation: Start with Auto — Balance, increase reasoning or select a specific model for difficult work, and periodically benchmark models from different providers against your repository.
 
@@ -191,15 +171,7 @@ These recommendations focus on Codex CLI.
 
 Use the default recommended model as your baseline rather than automatically selecting the most computationally intensive option.
 
-For routine agentic coding, OpenAI recommends medium reasoning effort as a good balance of speed and capability. Higher effort can be beneficial for difficult, long-running tasks.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-+1
-
-
+For routine agentic coding, OpenAI recommends medium reasoning effort as a good balance of speed and capability. Higher effort can be beneficial for difficult, long-running tasks.
 
 ### 3.2 Configure model and reasoning effort
 
@@ -227,13 +199,7 @@ For difficult tasks, consider increasing reasoning effort to `high`, rather than
 | Architectural analysis  | High                         |
 | Complex security review | High or higher, if supported |
 
-Reasoning-effort availability is model-dependent. OpenAI's reasoning guidance recommends evaluating higher effort for complex debugging and long-horizon agentic tasks rather than assuming it is always better.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-
+Reasoning-effort availability is model-dependent. OpenAI's reasoning guidance recommends evaluating higher effort for complex debugging and long-horizon agentic tasks rather than assuming it is always better.
 
 ### 3.4 Use different models for subagents where supported
 
@@ -241,13 +207,7 @@ When using Codex in a multi-agent workflow, consider assigning cheaper models to
 
 However, model assignment depends on the Codex runtime and configuration. The Codex CLI, Agents API, and Agents SDK do not expose identical configuration interfaces.
 
-For custom Agents SDK workflows, OpenAI explicitly supports model selection at the agent and run levels.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-
+For custom Agents SDK workflows, OpenAI explicitly supports model selection at the agent and run levels.
 
 Codex recommendation: Start with the recommended model at medium reasoning effort, increase effort for complex tasks, and use model-specific configuration for specialized agents only when the workflow justifies it.
 
@@ -263,13 +223,7 @@ Claude Code offers a particularly straightforward model-selection strategy based
 | Sonnet       | Balanced capability and cost | Everyday coding, debugging, feature implementation          |
 | Opus         | Strongest complex reasoning  | Architecture, difficult debugging, cross-module refactoring |
 
-Anthropic recommends Sonnet for most coding work, with Opus for harder problems and Haiku for lightweight tasks.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
-
-Claude Help Center
-
-
+Anthropic recommends Sonnet for most coding work, with Opus for harder problems and Haiku for lightweight tasks.
 
 ### 4.2 Use `/model` to switch during a session
 
@@ -287,13 +241,7 @@ claude --model opus
 claude --model haiku
 ```
 
-Use `/status` to check the active model. Available versions and aliases depend on your account and configuration.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
-
-Claude Help Center
-
-
+Use `/status` to check the active model. Available versions and aliases depend on your account and configuration.
 
 ### 4.3 Use Opus for planning and Sonnet for execution
 
@@ -322,13 +270,7 @@ tools: Read, Grep, Glob
 
 Other supported values include `sonnet`, `haiku`, and `inherit`.
 
-A practical configuration is Haiku for lightweight exploration, Sonnet for routine implementation, and Opus for complex review.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://academy.claude.com\&sz=32)
-
-Claude Academy
-
-
+A practical configuration is Haiku for lightweight exploration, Sonnet for routine implementation, and Opus for complex review.
 
 Claude Code recommendation: Use Sonnet as the default, Haiku for lightweight tasks, and Opus for complex planning, debugging, and critical reviews. Assign models explicitly to specialized subagents when appropriate.
 

@@ -161,15 +161,7 @@ Report findings with file references and suggested
 remediation steps.
 ```
 
-For complex tasks, consider using Plan mode first, then delegate independent investigations.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-
+For complex tasks, consider using Plan mode first, then delegate independent investigations.
 
 ### 2.2 Copilot CLI: Use built-in specialized agents
 
@@ -185,15 +177,7 @@ Copilot CLI provides built-in agents for common development activities, includin
 | `rubber-duck`     | Obtain a second opinion on plans and code       |
 | `general-purpose` | Perform broader delegated tasks                 |
 
-Use these before creating custom agents that duplicate their functionality.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-
+Use these before creating custom agents that duplicate their functionality.
 
 ### 2.3 Use `/fleet` for parallel orchestration in Copilot CLI
 
@@ -213,13 +197,7 @@ Do not modify files.
 Consolidate findings into a prioritized report.
 ```
 
-The orchestrator determines how to delegate and parallelize the work; the prompt does not guarantee exactly three subagents.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-
+The orchestrator determines how to delegate and parallelize the work; the prompt does not guarantee exactly three subagents.
 
 ### 2.4 Define reusable custom agents
 
@@ -227,15 +205,7 @@ For repository-level custom agents, use `.github/agents/` with Markdown agent de
 
 A useful practice is to define custom agents around recurring responsibilities, such as schema validation, API compatibility, or architectural conformance.
 
-Make agent descriptions specific so Copilot can select the appropriate agent.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-
+Make agent descriptions specific so Copilot can select the appropriate agent.
 
 Copilot recommendation: Use `#runSubagent` for isolated investigations in VS Code, `/fleet` for parallel tasks in Copilot CLI, and custom agents for recurring specialized work.
 
@@ -264,15 +234,7 @@ The primary agent owns integration,
 final validation, and the summary.
 ```
 
-This approach aligns with OpenAI's documented multi-agent guidance.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-+1
-
-
+This approach aligns with OpenAI's documented multi-agent guidance.
 
 ### 3.2 Use AGENTS.md for persistent guidance
 
@@ -280,29 +242,13 @@ Codex recognizes `AGENTS.md` as repository guidance. It is useful for instructio
 
 For example, you could add the delegation policy above to `AGENTS.md`, alongside your coding conventions, test requirements, and architectural constraints.
 
-However, `AGENTS.md` is an instruction file, not itself a subagent definition or a mechanism that enables multi-agent support.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-+1
-
-
+However, `AGENTS.md` is an instruction file, not itself a subagent definition or a mechanism that enables multi-agent support.
 
 ### 3.3 Distinguish CLI capabilities from API orchestration
 
 OpenAI also documents multi-agent orchestration through its Agents API, where `multi_agent.enabled` enables delegation and `max_concurrent_subagents` limits concurrency.
 
-That API configuration should not be confused with Codex CLI configuration. They are different interfaces, even though they share the Codex harness architecture.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-+1
-
-
+That API configuration should not be confused with Codex CLI configuration. They are different interfaces, even though they share the Codex harness architecture.
 
 ### 3.4 Prefer read-only parallel exploration before implementation
 
@@ -357,15 +303,7 @@ Claude Code lets custom subagents use different models.
 
 A practical strategy is to use a faster, less expensive model for routine exploration, a stronger model for complex design or implementation, and an appropriate model for independent review.
 
-The `model` field in a custom subagent definition supports this configuration.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://academy.claude.com\&sz=32)
-
-Claude Academy
-
-+1
-
-
+The `model` field in a custom subagent definition supports this configuration.
 
 ### 4.3 Prefer subagents for context-heavy investigations
 
@@ -396,15 +334,7 @@ Use a skill to teach Claude how to perform a procedure. Use a subagent when the 
 
 These mechanisms can complement each other.
 
-Claude Code recommendation: Define a small set of reusable specialists, use model selection and tool restrictions deliberately, and delegate context-heavy research and independent reviews.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://academy.claude.com\&sz=32)
-
-Claude Academy
-
-+1
-
-
+Claude Code recommendation: Define a small set of reusable specialists, use model selection and tool restrictions deliberately, and delegate context-heavy research and independent reviews.
 
 ## 5. Comparison across coding assistants
 

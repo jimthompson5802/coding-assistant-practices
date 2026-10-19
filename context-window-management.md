@@ -77,6 +77,28 @@ Periodically create a concise checkpoint containing:
 
 Summarize after completing a significant development phase, before switching tasks, or before a context reset.
 
+Example prompt:
+
+```text
+Create a concise checkpoint summary so another coding assistant can continue
+this task after a context reset. Include:
+
+- The objective, acceptance criteria, and user constraints.
+- Current progress: what is complete and what remains.
+- Key decisions and a brief rationale for each.
+- Files modified and the purpose of each change.
+- Tests and checks run, their results, and any checks still needed.
+- Known issues, unresolved questions, and unverified assumptions.
+- The next actions, in priority order, with relevant file paths and commands.
+
+Describe the current state rather than recounting the conversation. Clearly
+distinguish completed work from proposed work and verified facts from assumptions.
+Omit verbose tool output and abandoned approaches unless they explain a current
+constraint or prevent repeating a failed attempt. Do not include secrets.
+Save the summary as CHECKPOINT.md in the repository root, updating the file if
+it already exists. Reply with the path to the saved file.
+```
+
 ### 1.5 Separate durable knowledge from temporary context
 
 Not all information belongs in the conversation.
@@ -115,7 +137,7 @@ Preserve complete logs as files when needed, rather than repeatedly inserting th
 
 A fresh session is often preferable when moving to a substantially different task.
 
-Before resetting, preserve relevant decisions and progress in repository files or a concise handoff summary.
+Before resetting, preserve relevant decisions and progress in repository files or a concise handoff summary. See [section 1.4: Summarize at meaningful milestones](#14-summarize-at-meaningful-milestones) for a checkpoint prompt.
 
 Do not rely on the next session automatically recovering all details from the previous conversation.
 
@@ -127,15 +149,7 @@ These recommendations focus on Copilot in VS Code.
 
 VS Code provides a context window indicator in the Chat input. Hovering over it displays token usage and a breakdown of context consumption.
 
-Use this to identify when conversation history and tool outputs are becoming substantial. Available context capacity depends on the selected model.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-+1
-
-
+Use this to identify when conversation history and tool outputs are becoming substantial. Available context capacity depends on the selected model.
 
 ### 2.2 Use `/compact` proactively
 
@@ -149,53 +163,25 @@ and remaining work.
 
 Automatic compaction occurs as the context fills, but manually compacting after major milestones gives you more control over what the summary emphasizes.
 
-Compaction can omit details, so important decisions should also be recorded in files.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-+1
-
-
+Compaction can omit details, so important decisions should also be recorded in files.
 
 ### 2.3 Use focused instruction files
 
 Keep `.github/copilot-instructions.md` concise and link to supporting documents such as `ARCHITECTURE.md` and `CONTRIBUTING.md`.
 
-This is preferable to copying extensive documentation into global instructions, because project-wide instructions are repeatedly included in agent context.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-
+This is preferable to copying extensive documentation into global instructions, because project-wide instructions are repeatedly included in agent context.
 
 ### 2.4 Exclude irrelevant files from search
 
 VS Code supports `.gitignore`, `search.exclude`, and `files.exclude` to reduce noisy search results.
 
-For example, exclude generated artifacts, build directories, and large logs when they are not needed. Even search snippets consume context tokens.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-
+For example, exclude generated artifacts, build directories, and large logs when they are not needed. Even search snippets consume context tokens.
 
 ### 2.5 Use separate chats and forks
 
 Use `/fork` when investigating alternative solutions that share existing context. Start a new chat when you need fresh context, and a new session for an unrelated task or workspace.
 
-Copilot also supports separate chats within supported sessions, so test investigations and implementation work can have independent conversation histories.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-Visual Studio Code
-
-+1
-
-
+Copilot also supports separate chats within supported sessions, so test investigations and implementation work can have independent conversation histories.
 
 Copilot recommendation: Monitor context usage, compact at milestones, keep instructions short, and use separate chats or subagents to prevent unrelated investigations from polluting the main conversation.
 
@@ -217,13 +203,7 @@ Use this to inspect session information, including context utilization where sup
 /compact
 ```
 
-Use compaction when continuing the same task after substantial exploration or debugging. Do not assume every intermediate detail will survive compaction.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+Use compaction when continuing the same task after substantial exploration or debugging. Do not assume every intermediate detail will survive compaction.
 
 ### 3.2 Keep AGENTS.md short and hierarchical
 
@@ -244,13 +224,7 @@ repository/
 
 Use the root file for universal rules and nested files for module-specific guidance.
 
-Avoid duplicating instructions across levels. Codex can load multiple applicable instruction files, and those instructions consume context.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+Avoid duplicating instructions across levels. Codex can load multiple applicable instruction files, and those instructions consume context.
 
 ### 3.3 Maintain phase-specific context files
 
@@ -266,13 +240,7 @@ harness/
     └── phase-03-validation.md
 ```
 
-Each file should contain only information that matters to later phases. OpenAI's Codex workflow guidance describes this pattern for maintaining durable context across development phases.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+Each file should contain only information that matters to later phases. OpenAI's Codex workflow guidance describes this pattern for maintaining durable context across development phases.
 
 ### 3.4 Review skills and instructions for unnecessary content
 
@@ -280,25 +248,13 @@ Codex supports reusable skills, but large skill descriptions and excessive instr
 
 Keep skill descriptions concise, move detailed procedures into supporting files, and load specialized guidance only when needed.
 
-OpenAI specifically recommends revisiting older, overly prescriptive instructions as coding models become more capable.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-
+OpenAI specifically recommends revisiting older, overly prescriptive instructions as coding models become more capable.
 
 ### 3.5 Distinguish CLI compaction from API compaction
 
 OpenAI's Responses API supports automatic compaction thresholds and explicit compaction calls.
 
-These are API capabilities, not necessarily user-configurable Codex CLI settings. Avoid assuming that an API setting such as `compact_threshold` is available directly in Codex CLI.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-
+These are API capabilities, not necessarily user-configurable Codex CLI settings. Avoid assuming that an API setting such as `compact_threshold` is available directly in Codex CLI.
 
 Codex recommendation: Combine concise hierarchical `AGENTS.md` instructions with phase-specific context files. Use `/status` to monitor context and `/compact` when a task remains active but its conversation has accumulated excessive history.
 
@@ -355,13 +311,7 @@ Ask each subagent to return a compact report containing findings, evidence, and 
 
 Anthropic recommends saving progress to files for work that spans multiple context windows.
 
-This can include task lists, test results, setup scripts, and progress notes. A new context window can then reconstruct the relevant state from the filesystem instead of relying exclusively on summarized conversation history.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.anthropic.com\&sz=32)
-
-Claude Platform Docs
-
-
+This can include task lists, test results, setup scripts, and progress notes. A new context window can then reconstruct the relevant state from the filesystem instead of relying exclusively on summarized conversation history.
 
 Claude Code recommendation: Use `/context` to inspect usage, `/compact` for ongoing work, `/clear` at task boundaries, and persistent progress files for long-running tasks.
 
