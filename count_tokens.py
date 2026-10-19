@@ -47,7 +47,13 @@ def main():
         parser.exit(1, f"{path}: {error}\n")
 
     for key, value in totals.items():
-        print(f"{key}: {value}")
+        print(f"{key}: {value:,}")
+    cached_percentage = (
+        totals["cached_input_tokens"] / totals["input_tokens"] * 100
+        if totals["input_tokens"]
+        else 0
+    )
+    print(f"cached_input_percentage: {cached_percentage:.2f}%")
 
 
 if __name__ == "__main__":
