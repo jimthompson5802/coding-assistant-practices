@@ -2,15 +2,16 @@
 
 This repository collects practical guidance for using GitHub Copilot, Codex, and
 Claude Code effectively. The guides cover prompt caching, context window
-management, model selection, and subagent workflows. Python utilities help you
-measure recorded token usage from local Codex and GitHub Copilot logs, including
-cached input totals and cache reuse percentages.
+management, model selection, subagent workflows, and open-loop versus closed-loop
+development. Python utilities help you measure recorded token usage from local
+Codex and GitHub Copilot logs, including cached input totals and cache reuse
+percentages.
 
 ## Practical Guides
 
 These guides explain how to organize context, reuse cached input, choose models,
-and delegate work across coding assistants. Following these practices can reduce
-unnecessary token usage and cost, keep the assistant focused on relevant
+delegate work, and choose verification workflows across coding assistants.
+Following these practices can reduce unnecessary token usage and cost, keep the assistant focused on relevant
 information, and improve the quality and consistency of coding results. Each
 guide combines general principles with advice for GitHub Copilot, Codex, and
 Claude Code, plus comparisons and reusable policies.
@@ -24,6 +25,11 @@ Claude Code, plus comparisons and reusable policies.
   preserving reusable context, measuring cache benefits, and caching costs.
 - [Subagent practices](subagent-practices.md): Covers bounded delegation,
   parallel work, context isolation, permissions, integration, and validation.
+- [Open-loop vs. closed-loop practices](open-vs-closed-loop-practices.md): Explains
+  when to use open-loop exploration or closed-loop implementation with execution
+  feedback, explicit completion criteria, bounded correction attempts, and
+  verification proportional to risk. Includes workflow diagrams and a reusable
+  closed-loop prompt.
 
 ## Running the token counters
 
