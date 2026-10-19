@@ -30,21 +30,19 @@ The goal is to maximize the proportion of useful information in the context wind
 
 Rather than loading all potentially relevant information at the beginning, retrieve information incrementally.
 
-1\. Task definition
+```mermaid
+flowchart TD
+    task["<b>1. Task definition</b><br/>Objective, constraints, acceptance criteria"]
+    discovery["<b>2. Repository discovery</b><br/>Find relevant files and dependencies"]
+    inspection["<b>3. Targeted inspection</b><br/>Read only the necessary code and documentation"]
+    implementation["<b>4. Implementation and verification</b><br/>Load additional context only when required"]
 
-Objective, constraints, acceptance criteria
+    task --> discovery --> inspection --> implementation
 
-2\. Repository discovery
-
-Find relevant files and dependencies
-
-3\. Targeted inspection
-
-Read only the necessary code and documentation
-
-4\. Implementation and verification
-
-Load additional context only when required
+    classDef step fill:#fafafa,stroke:#ddd,color:#111,rx:12,ry:12
+    class task,discovery,inspection,implementation step
+    linkStyle default stroke:#666
+```
 
 This approach is sometimes called just-in-time context retrieval.
 
