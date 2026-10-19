@@ -15,13 +15,13 @@ information, and improve the quality and consistency of coding results. Each
 guide combines general principles with advice for GitHub Copilot, Codex, and
 Claude Code, plus comparisons and reusable policies.
 
-- [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
-  preserving reusable context, measuring cache benefits, and caching costs.
-- [Context window management](context-window-management.md): Covers focused
-  context loading, compaction, persistent instructions, and session handoffs.
 - [Model selection guidance](model-selection-guidance.md): Describes choosing
   models and reasoning effort by task complexity, balancing cost and quality,
   and evaluating models on your codebase.
+- [Context window management](context-window-management.md): Covers focused
+  context loading, compaction, persistent instructions, and session handoffs.
+- [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
+  preserving reusable context, measuring cache benefits, and caching costs.
 - [Subagent practices](subagent-practices.md): Covers bounded delegation,
   parallel work, context isolation, permissions, integration, and validation.
 
