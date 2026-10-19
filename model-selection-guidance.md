@@ -32,17 +32,18 @@ These are starting points, not fixed rules. A smaller model that performs well o
 
 Begin with a model appropriate for the expected complexity, then escalate when necessary.
 
-Fast model
+```mermaid
+flowchart TD
+    fast["<b>Fast model</b><br/>Exploration, routine edits, straightforward tests"]
+    balanced["<b>Balanced model</b><br/>Feature implementation, debugging, refactoring"]
+    advanced["<b>Advanced reasoning model</b><br/>Complex architecture, difficult bugs, high-risk changes"]
 
-Exploration, routine edits, straightforward tests
+    fast --> balanced --> advanced
 
-Balanced model
-
-Feature implementation, debugging, refactoring
-
-Advanced reasoning model
-
-Complex architecture, difficult bugs, high-risk changes
+    classDef tier fill:#fafafa,stroke:#ddd,color:#111,rx:12,ry:12
+    class fast,balanced,advanced tier
+    linkStyle default stroke:#666
+```
 
 Escalation should be based on evidence: repeated incorrect changes, inability to reason about dependencies, failed tests, or unresolved architectural trade-offs.
 
@@ -324,15 +325,15 @@ The primary agent remains responsible for integration and final validation.
 
 ## 7. Recommended starting configuration
 
-GitHub Copilot
+**GitHub Copilot**
 
 Auto — Balance for everyday coding. Intelligence or explicit advanced models for difficult tasks.
 
-OpenAI Codex
+**OpenAI Codex**
 
 Recommended coding model with medium reasoning effort. Increase to high for difficult tasks.
 
-Claude Code
+**Claude Code**
 
 Sonnet for everyday development, Haiku for lightweight tasks, and Opus for complex work.
 

@@ -18,19 +18,6 @@ Prompt caching typically reuses a previously processed prefix of the model's inp
 
 ### Illustrative coding assistant request
 
-```text
-Model input (in order)
-├── Unchanged prefix → eligible for cache reuse
-│   ├── System instructions
-│   ├── Repository instructions
-│   ├── Unchanged source code
-│   └── Previous conversation
-└── New context → processed as new input
-    ├── Latest user request
-    ├── New tool results
-    └── Changed files
-```
-
 **Model processing:** Reuse the eligible cached prefix, then process the new input.
 
 ```mermaid
@@ -39,9 +26,8 @@ flowchart TD
         direction TB
         prefix["**Eligible for cache reuse**<br/>Unchanged prefix<br/>System instructions<br/>Repository instructions<br/>Unchanged source code<br/>Previous conversation"]
         newContext["**New context**<br/>Latest user request<br/>New tool results<br/>Changed files"]
-        prefix --> newContext
+        prefix --"+"--> newContext
         newContext --> results["Results of new context request"]
-        results --Add to previous conversation-->prefix
     end
 
 
