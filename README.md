@@ -89,3 +89,10 @@ python3 count_copilot_tokens.py --help
 Each program requires an existing directory. Unreadable files and malformed JSON
 cause an unsuccessful exit without printing partial totals. JSON errors include
 the file path and line number.
+
+## Related guidance
+
+- [Cache token guidance](cache-token-guidance.md)
+- [Context window management](context-window-management.md)
+- [Model selection guidance](model-selection-guidance.md)
+- [Subagent practices](subagent-practices.md)
