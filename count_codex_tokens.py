@@ -46,6 +46,7 @@ def main():
     except (OSError, UnicodeError) as error:
         parser.exit(1, f"{path}: {error}\n")
 
+    print("coding_assistant: Codex")
     for key, value in totals.items():
         print(f"{key}: {value:,}")
     cached_percentage = (

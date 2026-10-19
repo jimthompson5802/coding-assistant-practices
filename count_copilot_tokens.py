@@ -55,6 +55,7 @@ def main():
             file=sys.stderr,
         )
 
+    print("coding_assistant: GitHub Copilot (VS Code)")
     for key, value in totals.items():
         print(f"{key}: {value:,}")
     print("reasoning_output_tokens: unavailable")

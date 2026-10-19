@@ -7,7 +7,7 @@ installed. Run the commands below from this repository's directory.
 ## Codex
 
 ```bash
-python3 count_tokens.py ~/.codex/sessions
+python3 count_codex_tokens.py ~/.codex/sessions
 ```
 
 The program recursively searches for `.jsonl` files at any directory depth. For
@@ -17,7 +17,7 @@ record, then sums those cumulative counts across files.
 To count a smaller directory, such as one day's sessions:
 
 ```bash
-python3 count_tokens.py ~/.codex/sessions/2026/10/18
+python3 count_codex_tokens.py ~/.codex/sessions/2026/10/18
 ```
 
 ## GitHub Copilot in VS Code
@@ -47,9 +47,11 @@ If no matching logs exist, the program reports zeros.
 
 ## Understanding the output
 
-Both programs print comma-separated counts and a percentage to two decimal places:
+Both programs identify the coding assistant, then print comma-separated counts
+and a percentage to two decimal places. For example, Copilot output looks like:
 
 ```text
+coding_assistant: GitHub Copilot (VS Code)
 input_tokens: 100,000
 cached_input_tokens: 80,000
 output_tokens: 2,000
@@ -57,6 +59,8 @@ reasoning_output_tokens: unavailable
 total_tokens: 102,000
 cached_input_percentage: 80.00%
 ```
+
+The Codex program starts with `coding_assistant: Codex`.
 
 | Field | Meaning |
 | --- | --- |
@@ -78,7 +82,7 @@ may be incomplete. Missing reasoning data is shown as `unavailable`, not zero.
 ## Help and errors
 
 ```bash
-python3 count_tokens.py --help
+python3 count_codex_tokens.py --help
 python3 count_copilot_tokens.py --help
 ```
 
