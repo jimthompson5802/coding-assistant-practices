@@ -1,35 +1,41 @@
 # Coding Assistant Guidance
 
 This repository collects practical guidance for using GitHub Copilot, Codex, and
-Claude Code effectively. The guides cover prompt caching, context window
-management, model selection, subagent workflows, and open-loop versus closed-loop
-development. Python utilities help you measure recorded token usage from local
-Codex and GitHub Copilot logs, including cached input totals and cache reuse
-percentages.
+Claude Code effectively. The guides cover open-loop versus closed-loop
+development, planning, context window management, model selection, subagent
+workflows, and prompt caching. Python utilities help you measure recorded token
+usage from local Codex and GitHub Copilot logs, including cached input totals and
+cache reuse percentages.
 
 ## Practical Guides
 
-These guides explain how to organize context, reuse cached input, choose models,
-delegate work, and choose verification workflows across coding assistants.
-Following these practices can reduce unnecessary token usage and cost, keep the assistant focused on relevant
-information, and improve the quality and consistency of coding results. Each
-guide combines general principles with advice for GitHub Copilot, Codex, and
-Claude Code, plus comparisons and reusable policies.
+These guides explain how to choose exploration and verification workflows, plan
+implementation, manage context, select models, delegate work, and reuse cached
+input across coding assistants. Following these practices can reduce unnecessary
+token usage and cost, keep the assistant focused on relevant information, and improve the
+quality and consistency of coding results. Each guide combines general principles
+with advice for GitHub Copilot, Codex, and Claude Code, plus comparisons and
+reusable policies.
 
-- [Model selection guidance](model-selection-guidance.md): Describes choosing
-  models and reasoning effort by task complexity, balancing cost and quality,
-  and evaluating models on your codebase.
-- [Context window management](context-window-management.md): Covers focused
-  context loading, compaction, persistent instructions, and session handoffs.
-- [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
-  preserving reusable context, measuring cache benefits, and caching costs.
-- [Subagent practices](subagent-practices.md): Covers bounded delegation,
-  parallel work, context isolation, permissions, integration, and validation.
 - [Open-loop vs. closed-loop practices](open-vs-closed-loop-practices.md): Explains
   when to use open-loop exploration or closed-loop implementation with execution
   feedback, explicit completion criteria, bounded correction attempts, and
   verification proportional to risk. Includes workflow diagrams and a reusable
   closed-loop prompt.
+- [Planning practices](coding-assistant-planning-practices.md): Covers
+  repository-aware planning, phased task decomposition, dependencies, task-level
+  and phase-level verification, developer validation gates, and persistent plans.
+  Includes workflow diagrams, a recommended plan structure, and a reusable
+  planning and execution prompt.
+- [Context window management](context-window-management.md): Covers focused
+  context loading, compaction, persistent instructions, and session handoffs.
+- [Model selection guidance](model-selection-guidance.md): Describes choosing
+  models and reasoning effort by task complexity, balancing cost and quality,
+  and evaluating models on your codebase.
+- [Subagent practices](subagent-practices.md): Covers bounded delegation,
+  parallel work, context isolation, permissions, integration, and validation.
+- [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
+  preserving reusable context, measuring cache benefits, and caching costs.
 
 ## Running the token counters
 
