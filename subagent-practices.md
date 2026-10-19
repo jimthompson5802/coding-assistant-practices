@@ -37,25 +37,17 @@ Subagents are most effective when tasks have few dependencies and limited overla
 
 Example: Parallel code investigation
 
-Primary coding agent
+```mermaid
+flowchart TD
+    primary["Primary coding agent<br/>Coordinates the investigation and integrates findings"]
+    agent1["Agent 1<br/>Inspect implementation"]
+    agent2["Agent 2<br/>Review test coverage"]
+    agent3["Agent 3<br/>Analyze security"]
+    integration["Primary coding agent<br/>Reconciles results, implements changes, and validates"]
 
-Coordinates the investigation and integrates findings
-
-Agent 1
-
-Inspect implementation
-
-Agent 2
-
-Review test coverage
-
-Agent 3
-
-Analyze security
-
-Primary coding agent
-
-Reconciles results, implements changes, and validates
+    primary --> agent1 & agent2 & agent3
+    agent1 & agent2 & agent3 --> integration
+```
 
 Good candidates for parallel delegation include codebase exploration, independent design reviews, security audits, and test coverage analysis.
 
