@@ -399,3 +399,4 @@ For substantial coding projects, I would prioritize three practices: progressive
 - [OpenAI: Rethinking skills and prompts](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra?utm_source=chatgpt.com)
 - [Claude Code: Cost and token management](https://code.claude.com/docs/en/costs?utm_source=chatgpt.com)
 - [Claude Code: Manage memory and instructions](https://code.claude.com/docs/en/memory?utm_source=chatgpt.com)
+- [Stanford CS146S: Modern Software Developer - Context Engineering](https://youtu.be/L1OBRtfPS34?t=1645)
