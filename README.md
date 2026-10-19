@@ -8,6 +8,13 @@ cached input totals and cache reuse percentages.
 
 ## Practical Guides
 
+These guides explain how to organize context, reuse cached input, choose models,
+and delegate work across coding assistants. Following these practices can reduce
+unnecessary token usage and cost, keep the assistant focused on relevant
+information, and improve the quality and consistency of coding results. Each
+guide combines general principles with advice for GitHub Copilot, Codex, and
+Claude Code, plus comparisons and reusable policies.
+
 - [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
   preserving reusable context, measuring cache benefits, and caching costs.
 - [Context window management](context-window-management.md): Covers focused
@@ -17,9 +24,6 @@ cached input totals and cache reuse percentages.
   and evaluating models on your codebase.
 - [Subagent practices](subagent-practices.md): Covers bounded delegation,
   parallel work, context isolation, permissions, integration, and validation.
-
-Each guide includes practices for GitHub Copilot, Codex, and Claude Code, along
-with comparisons and reusable policies.
 
 ## Running the token counters
 
