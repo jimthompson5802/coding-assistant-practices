@@ -21,14 +21,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 - **Open-loop:** The assistant generates code or recommendations without automatically executing checks and using their results to revise the output.
 - **Closed-loop:** The assistant makes a change, runs relevant checks, evaluates the results, and uses that feedback to correct problems until acceptance criteria are met or a stopping condition is reached.
 
-| Dimension | Open-loop | Closed-loop |
-| --- | --- | --- |
-| Typical flow | Request → generate → hand off | Request → change → check → evaluate → correct or finish |
-| Useful for | Brainstorming, explanation, exploring approaches, initial drafts | Features, bug fixes, refactoring, and other changes requiring verification |
-| Evidence produced | A proposed answer or change; execution remains unverified | Results from checks actually performed, with their limits reported |
-| Repository support | Discoverable code, documentation, conventions, and constraints | The same context plus runnable checks, acceptance criteria, and useful diagnostics |
-| Trade-off | Less execution overhead; validation remains a subsequent responsibility | More execution and iteration; confidence depends on the quality and coverage of checks |
-| Human role | Evaluate the proposal and arrange verification when needed | Set scope and review gates, assess evidence, and resolve escalations |
+**Typical progression:** Explore and propose → agree on a bounded change → implement, check, and correct → present evidence for review.
 
 **Suggested visual:**
 
@@ -47,18 +40,29 @@ flowchart LR
 
 **Source:** [Open-loop vs. closed-loop practices, sections 1–2](../open-vs-closed-loop-practices.md#1-understand-the-two-workflows).
 
-## 2. The repository is part of the agent's working environment
+## 2. The repository enables the feedback loop
 
-**Key message:** Effective agentic development depends on the environment around the model.
+**Key message:** Agentic coding combines a workflow with an environment: the workflow directs the assistant's actions; an agent-friendly repository supplies the knowledge, feedback, and boundaries that make those actions reliable.
 
-- An assistant needs to discover how the project works, identify relevant code, understand constraints, and evaluate its changes.
-- Knowledge available only in a developer's memory or an old chat is difficult to recover reliably.
-- Repository readiness means making that knowledge and feedback accessible during the work.
-- Opening question for the audience: Could a new assistant find the correct implementation path and verification commands without a maintainer narrating every step?
+An agent-friendly repository helps an assistant understand what to change, act within clear boundaries, and determine whether the change worked.
 
-**Suggested visual:** Task → repository context → change → executable feedback → review.
+| Agent activity | Repository support | Role in the workflow |
+| --- | --- | --- |
+| Understand the task and explore approaches | README, architecture, specifications, module map | Grounds open-loop exploration in the actual project. |
+| Choose and implement a bounded change | Instructions, conventions, scope, implementation plan | Turns an approach into authorized, reviewable work. |
+| Execute and evaluate checks | Build commands, tests, acceptance criteria, diagnostics | Supplies the execution feedback needed to close the loop. |
+| Correct, escalate, or hand off | Correction limits, review gates, checkpoints, evidence | Bounds iteration and preserves state for review or resumption. |
 
-**Source:** [Planning practices, sections 1.2–1.3](../coding-assistant-planning-practices.md#12-understand-the-codebase-before-planning).
+- Discoverable knowledge supports both exploration and implementation.
+- Closed-loop work additionally requires executable feedback and clear success and stopping criteria.
+- Persistent plans and checkpoints maintain continuity across both workflows and across sessions.
+- Knowledge available only in a developer's memory or an old chat makes these activities harder to repeat reliably.
+
+**Suggested visual:** Explore → bound the change → implement → check → correct or review, with repository artifacts beneath each activity and a feedback arrow from checks to implementation.
+
+**Speaker transition:** The next sections define repository readiness through the capabilities that support these activities. The `ide-tester` case study follows the same sequence using actual files and commands.
+
+**Sources:** [Planning practices, sections 1.2–1.3](../coding-assistant-planning-practices.md#12-understand-the-codebase-before-planning); [closed-loop practices, section 2](../open-vs-closed-loop-practices.md#2-common-good-practices); [context management, sections 1.4–1.5](../context-window-management.md#14-summarize-at-meaningful-milestones).
 
 ## 3. Define agent-friendly through observable capabilities
 
@@ -252,11 +256,13 @@ ide-tester/
 
 Example request: strengthen saved-file verification for an explicitly defined edge case.
 
-1. Read root `AGENTS.md` and the local `smoke/AGENTS.md`; identify the scope and applicable rules.
-2. Follow the module map and coding standards to `smoke/src/files.ts` and `smoke/tests/files.test.ts`. Existing tests cover exact UTF-8 bytes, destination validation, and refusal of existing destinations, including symlinks.
-3. Define the new observable acceptance criterion and add an exposing behavior test before implementation, following the repository's TDD policy.
-4. Build before testing: `npm --prefix smoke run build` runs lint, format checks, and both TypeScript compilations. A targeted check can then use `node --test smoke/dist/tests/files.test.js`; the documented full non-GUI command is `npm --prefix smoke run test:unit`.
-5. Report the behavior change, checks actually run, and any limitations. Record progress in the applicable plan and use the PR template when publication is requested.
+1. **Understand and explore:** Read root `AGENTS.md` and local `smoke/AGENTS.md`; follow the module map and coding standards to `smoke/src/files.ts` and `smoke/tests/files.test.ts`. Existing tests cover exact UTF-8 bytes, destination validation, and refusal of existing destinations, including symlinks. This grounds an initial proposal in repository facts; it does not yet verify a new change.
+2. **Bound the change:** Define the edge case, observable acceptance criterion, scope, and applicable authorization. Record a plan when the change warrants one. Instructions and standards supply the constraints; the developer's request supplies the intended outcome.
+3. **Implement with feedback:** Add an exposing behavior test before implementation under the repository's TDD policy. Build with `npm --prefix smoke run build`, then run `node --test smoke/dist/tests/files.test.js` to confirm the intended failure. Implement the change, rebuild, and rerun the check. Inspect failures and correct the implementation within the repository's four-unsuccessful-fix-round limit. This is the transition into closed-loop development.
+4. **Evaluate completion:** Run the applicable regression checks; the documented full non-GUI command is `npm --prefix smoke run test:unit`. Compare the results with the acceptance criterion, distinguishing checks that passed, failed, or could not run. Build runs lint, formatting checks, and both TypeScript compilations; tests execute compiled output.
+5. **Review, escalate, or hand off:** Report the behavior change, evidence, and limitations. Record progress and next actions in the applicable plan, obtain required developer validation, and use the PR template when publication is requested. Escalate unresolved failures or scope changes at the defined boundary.
+
+**Connection to repository friendliness:** The assistant can follow this workflow because knowledge is discoverable, constraints are explicit, feedback is executable, and progress is persistent. Each repository artifact supports an activity in the loop.
 
 **Demonstration boundary:** This is a proposed walkthrough grounded in inspected source and commands. No implementation or execution was performed for the presentation. Non-GUI evidence would establish saved-file logic; real IDE interactions require separate GUI evidence.
 
@@ -305,7 +311,7 @@ Each skill has a `SKILL.md` defining when to use it, which repository sources to
 
 ## 13. Key takeaways
 
-**Key message:** Repository structure, guidance, and executable feedback enable reliable agentic development.
+**Key message:** The workflow directs the assistant’s actions; an agent-friendly repository supplies the knowledge, feedback, and boundaries needed to carry them out reliably.
 
 - **Make knowledge discoverable:** Provide clear entry points, module maps, and linked architecture and decisions.
 - **Keep guidance focused:** Use concise, layered instructions and separate stable rules from changing task state.
@@ -315,6 +321,21 @@ Each skill has a `SKILL.md` defining when to use it, which repository sources to
 - **Connect practices through workflows:** `ide-tester` demonstrates these capabilities with local skills, templates, and verification tooling; its gaps show why context weight, repeatability, and evidence freshness still need attention.
 
 **Definition to leave on screen:** An agent-friendly repository makes project knowledge discoverable, changes bounded, results verifiable, and work resumable.
+
+## Supporting material: Open-loop and closed-loop comparison
+
+Use this table for questions or additional explanation after introducing the workflows.
+
+| Dimension | Open-loop | Closed-loop |
+| --- | --- | --- |
+| Typical flow | Request → generate → hand off | Request → change → check → evaluate → correct or finish |
+| Useful for | Brainstorming, explanation, exploring approaches, initial drafts | Features, bug fixes, refactoring, and other changes requiring verification |
+| Evidence produced | A proposed answer or change; execution remains unverified | Results from checks actually performed, with their limits reported |
+| Repository support | Discoverable code, documentation, conventions, and constraints | The same context plus runnable checks, acceptance criteria, and useful diagnostics |
+| Trade-off | Less execution overhead; validation remains a subsequent responsibility | More execution and iteration; confidence depends on the quality and coverage of checks |
+| Human role | Evaluate the proposal and arrange verification when needed | Set scope and review gates, assess evidence, and resolve escalations |
+
+**Source:** [Open-loop vs. closed-loop practices](../open-vs-closed-loop-practices.md).
 
 ## Source guides
 
