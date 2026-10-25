@@ -4,13 +4,15 @@ Draft presentation outline
 
 **Audience:** Developers, technical leads, and repository maintainers adopting AI coding assistants.
 
-**Suggested length:** 25–30 minutes, including discussion.
+**Suggested length:** 35–40 minutes with the case study, including discussion; 25–30 minutes if the case study is condensed.
 
 **Presentation objective:** Define what makes a repository agent-friendly, connect those qualities to concrete repository artifacts, and give teams a practical way to assess readiness.
 
 **Working definition:** An agent-friendly repository provides discoverable project knowledge, clear instructions and boundaries, executable verification, and persistent task state so a coding assistant can make reviewable changes with appropriate human oversight.
 
-This outline synthesizes the repository's practical guides. The suggested repository layout and readiness checklist are proposed applications of those practices, rather than requirements for a particular assistant.
+This outline synthesizes the repository's practical guides. The suggested repository layout and case study assessment are proposed applications of those practices, rather than requirements for a particular assistant.
+
+**Running example:** `ide-tester`, a standalone TypeScript VS Code smoke tester, demonstrates these capabilities through its repository structure, instructions, verification tooling, and recorded development workflow. Section 11 includes a concrete mapping and improvement opportunities. Repository inspection baseline: 2026-10-25, commit `efae26b`. This is a structural assessment; build, unit, and GUI checks were not rerun for this presentation. Links to its files use the sibling checkout at `../../ide-tester/`.
 
 ## 1. The repository is part of the agent's working environment
 
@@ -168,36 +170,116 @@ repository/
 
 **Sources:** [Context management, sections 1.3–1.5](../context-window-management.md#13-keep-persistent-instructions-concise); [planning practices, section 4](../coding-assistant-planning-practices.md#4-recommended-implementation-plan-structure).
 
-## 11. Assess readiness with a representative task
+## 11. Case study: An agent-friendly repository in practice
 
-**Key message:** Demonstrate readiness by observing an assistant complete and hand off real work.
+### 11.1 Case study: `ide-tester` implements the example in its own layout
 
-Proposed checklist for a bounded change:
+**Example repository — `ide-tester`:** A TypeScript smoke-test harness that launches a dedicated VS Code instance and automates checks of editing, Git, Python, and Copilot Chat workflows. It uses isolated profiles and disposable workspaces, verifies observable results, and reports outcomes and cleanup status. Chat checks support a mock service or the real Copilot backend; GUI runs require an authorized, prepared desktop environment.
 
-- Can the assistant find the relevant code, constraints, and contracts?
-- Can it identify and run the documented verification commands?
-- Are the acceptance criteria and human review boundaries clear?
-- Can it use failure feedback to correct the change within agreed limits?
-- Does the final report distinguish verified results from unresolved issues?
-- Can a fresh session recover the current state and next actions?
+**Key message:** `ide-tester` is an example of an agent-friendly repository because it provides concrete routes to discover, understand, change, verify, and resume work.
 
-Record evidence and friction for each item. Use the findings to prioritize repository improvements.
+```text
+ide-tester/
+├── README.md                     # Current scope, setup, architecture diagram, navigation
+├── AGENTS.md                     # Shared instructions, preservation and authorization
+├── architectures/                # Solution design, CALM model, observations
+├── specifications/               # Retained requirements and historical backlogs
+├── docs/
+│   ├── implementation-plans/     # Plans, decisions, progress and validation records
+│   ├── research/                 # Feasibility findings and supporting research
+│   └── preserved-python-environment.md
+├── .agents/skills/               # Backlog, planning, execution, issue and PR workflows
+├── .github/                      # Issue and pull request templates
+└── smoke/                        # Active TypeScript implementation
+    ├── AGENTS.md                 # Local commands, module map and execution contracts
+    ├── README.md                 # Setup, qualified compatibility, usage and recovery
+    ├── CODING_STANDARDS.md
+    ├── DEVELOPMENT_WORKFLOW.md
+    ├── package.json, package-lock.json, .npmrc
+    ├── src/, tests/, helper/     # Implementation, non-GUI tests and helper extension
+    └── scripts/                 # GUI command bootstrap, parsing and reporting
+```
 
-**Suggested audience activity:** Identify the first missing capability in a repository the team maintains.
+| Outline capability / illustrative artifact | Actual `ide-tester` evidence | How it helps the agent |
+| --- | --- | --- |
+| Discover: entry point and module map | [Root README](../../ide-tester/README.md), [local module responsibility map](../../ide-tester/smoke/AGENTS.md#project-structure) | Directs discovery to the active TypeScript tester and identifies which modules own orchestration, UI interactions, verification, profiles, and reporting. |
+| Understand: instructions and conventions | [Root instructions](../../ide-tester/AGENTS.md), [tester instructions](../../ide-tester/smoke/AGENTS.md), [coding standards](../../ide-tester/smoke/CODING_STANDARDS.md) | Separates shared policy from local guidance; explains generated output, strict TypeScript, boundaries, evidence, and resource ownership. |
+| Understand: architecture and decisions | [Solution design](../../ide-tester/architectures/smoke-solution-design.md), [implementation plans](../../ide-tester/docs/implementation-plans/) | Supplies architecture under `architectures/`; decisions and rationale live in plans rather than a dedicated `docs/decisions/` directory. |
+| Act within bounds: workflow and authorization | [Development workflow](../../ide-tester/smoke/DEVELOPMENT_WORKFLOW.md), root instructions | Defines planning, TDD, phase validation, and review. Requires escalation after four unsuccessful fix rounds and separate authorization for GUI execution; protects retained profiles and Python resources. |
+| Verify: commands and executable checks | [Package scripts](../../ide-tester/smoke/package.json), [setup and compatibility](../../ide-tester/smoke/README.md), `smoke/tests/` | Provides dependency installation, linting, formatting, compilation, and non-GUI tests. Documents a distinct path for authorized GUI qualification. |
+| Verify: independent evidence and outcomes | [Saved-file verification](../../ide-tester/smoke/src/files.ts), [behavior tests](../../ide-tester/smoke/tests/files.test.ts), [reporting](../../ide-tester/smoke/src/report.ts) | Checks exact saved bytes and owned paths independently of UI actions; distinguishes passed, failed, blocked, harness error, and not-run outcomes, with cleanup reported separately. |
+| Resume: persistent plan and checkpoint equivalent | [Issue #50 plan and execution record](../../ide-tester/docs/implementation-plans/issue-50-gui-suite-command.md) | Preserves scope, phase tasks, failures, refinements, developer acceptance, and later amendments. Plans and current-gate instructions serve the handoff function without a root `CHECKPOINT.md`. |
+| Review: reusable delivery artifacts | [PR template](../../ide-tester/.github/pull_request_template.md), `.github/ISSUE_TEMPLATE/`, `.agents/skills/` | Makes acceptance criteria, evidence, developer validation, and limitations explicit at delivery boundaries. |
 
-**Sources:** [Model selection, section 1.8](../model-selection-guidance.md#18-evaluate-models-on-your-own-codebase); [closed-loop practices, section 2](../open-vs-closed-loop-practices.md#2-common-good-practices); [context management, section 1.4](../context-window-management.md#14-summarize-at-meaningful-milestones).
+**Speaker emphasis:** `smoke/DEVELOPMENT_WORKFLOW.md` and `smoke/CODING_STANDARDS.md` provide the contribution guidance illustrated by `CONTRIBUTING.md`; `smoke/src/`, `smoke/tests/`, and `smoke/scripts/` provide the source, test, and tooling roles. Different filenames and nesting still fulfill the capabilities.
 
-## 12. Turn the definition into a first improvement
+### 11.2 Walk through one bounded change using the actual structure
 
-**Key message:** Start with the gap that most often prevents a verified, reviewable result.
+**Key message:** The structure gives the assistant a concrete route from a request to reviewable evidence.
 
-- Establish working setup and verification commands with clear completion criteria.
-- Add concise entry instructions and links to essential project knowledge.
-- Introduce persistent plans and checkpoints for substantial work.
-- Clarify execution boundaries, escalation conditions, and developer validation gates.
-- Repeat a representative task and compare evidence of quality, time, rework, and intervention.
+Example request: strengthen saved-file verification for an explicitly defined edge case.
 
-**Closing discussion:** Which repository improvement would most help an assistant complete your team's next real task?
+1. Read root `AGENTS.md` and the local `smoke/AGENTS.md`; identify the scope and applicable rules.
+2. Follow the module map and coding standards to `smoke/src/files.ts` and `smoke/tests/files.test.ts`. Existing tests cover exact UTF-8 bytes, destination validation, and refusal of existing destinations, including symlinks.
+3. Define the new observable acceptance criterion and add an exposing behavior test before implementation, following the repository's TDD policy.
+4. Build before testing: `npm --prefix smoke run build` runs lint, format checks, and both TypeScript compilations. A targeted check can then use `node --test smoke/dist/tests/files.test.js`; the documented full non-GUI command is `npm --prefix smoke run test:unit`.
+5. Report the behavior change, checks actually run, and any limitations. Record progress in the applicable plan and use the PR template when publication is requested.
+
+**Demonstration boundary:** This is a proposed walkthrough grounded in inspected source and commands. No implementation or execution was performed for the presentation. Non-GUI evidence would establish saved-file logic; real IDE interactions require separate GUI evidence.
+
+**Recorded evidence to discuss:** The [post-acceptance record for issue #50](../../ide-tester/docs/implementation-plans/issue-50-gui-suite-command.md#post-acceptance-change--explicit-build-step) reports a passing build and **252 non-GUI tests** after separating compilation from `test:gui`. It explicitly states that no new GUI run qualified that bootstrap change. This illustrates evidence limits as well as successful verification.
+
+### 11.3 Repository skills turn guidance into repeatable workflows
+
+**Key message:** The five skills under `.agents/skills/` give the assistant reusable procedures for moving from requirements to verified, reviewable delivery.
+
+Each skill has a `SKILL.md` defining when to use it, which repository sources to read, the expected deliverable, and the applicable authorization boundaries. These are workflow instructions; they do not themselves create separate agents or enable parallel execution.
+
+| Repository skill | Purpose and inputs | Deliverable and boundaries |
+| --- | --- | --- |
+| [generate-milestone-user-stories](../../ide-tester/.agents/skills/generate-milestone-user-stories/SKILL.md) | Turns a selected milestone from the harness proposal into bounded stories, using the existing backlog as a structural model. Resolves consequential scope and acceptance decisions with the developer. | Saves a backlog under `specifications/` with stable story IDs, dependencies, observable acceptance criteria, evidence requirements, and developer gates. Issue publication and implementation are separate requests. |
+| [create-github-issue](../../ide-tester/.agents/skills/create-github-issue/SKILL.md) | Converts a requested issue or sourced story into GitHub issue content, using the current user-story template where applicable. Checks for duplicates and preserves criteria and dependencies. | Produces an unpublished draft or publishes when requested, then verifies the resulting issue. Handles uncertain publication before retrying; issue creation does not authorize implementation. |
+| [plan-user-story](../../ide-tester/.agents/skills/plan-user-story/SKILL.md) | Inspects a supplied story, relevant implementation, tests, and constraints to design concrete phases and tasks. Maps acceptance criteria to verification. | Saves a plan under `docs/implementation-plans/` with file operations, task checkboxes, dependencies, evidence, and developer checkpoints. Plan approval and implementation authorization remain separate. |
+| [execute-plan](../../ide-tester/.agents/skills/execute-plan/SKILL.md) | Executes or resumes the next eligible authorized phase of a supplied Markdown plan, following task dependencies and repository verification rules. | Updates the plan with verified progress and evidence; leaves blocked or unverified work unchecked. Stops at every phase boundary, including the final phase, for developer validation and honors the repository's fix-round limit. |
+| [create-pull-request](../../ide-tester/.agents/skills/create-pull-request/SKILL.md) | Inspects the actual branch diff, source requirements, validation evidence, and current PR template. Checks for an existing PR for the head/base pair. | Prepares unpublished content or creates and verifies a requested PR with acceptance, evidence, and limitations. PR creation does not authorize merging or advancing developer gates. |
+
+**Suggested visual:** Milestone → story backlog → GitHub issues → implementation plan → authorized phase execution → review → pull request. Show developer decisions and validation gates at the relevant transitions; each step requires its applicable instruction rather than automatically triggering the next.
+
+**How this supports the agent-friendly definition:**
+
+- **Discover and understand:** Skills point to authoritative instructions, specifications, templates, and implementation evidence instead of repeating every source.
+- **Act within bounds:** Each workflow separates drafting, publication, implementation, and developer validation.
+- **Verify:** Completion depends on observable results and evidence; issue and PR publication includes checking the created artifact.
+- **Resume:** Stable story/task IDs and updated Markdown plans let a later session recover progress and the next eligible action.
+
+**Speaker emphasis:** [The development workflow](../../ide-tester/smoke/DEVELOPMENT_WORKFLOW.md) connects these local skills and identifies optional external skills for grilling, TDD, debugging, and code review. Those external skills require availability in the agent session. The retained historical proposal must also be reviewed against current scope before generating new work.
+
+### 11.4 Gaps and limits: where `ide-tester` could become friendlier
+
+**Key message:** A repository can demonstrate agent-friendly practices while retaining friction and qualification gaps.
+
+| Observed gap or limitation | Effect on the outline's capabilities | Suggested improvement |
+| --- | --- | --- |
+| `smoke/AGENTS.md` includes lengthy, changing acceptance and run histories; root and tester READMEs also repeat status details. | Loads temporary state into frequently used instructions and creates multiple places to reconcile current status. | Keep stable rules and a short current-state pointer in instructions; consolidate detailed execution history in plans and link to it. |
+| Long implementation plans preserve superseded scope alongside amendments. The issue #50 plan labels old build-on-invocation requirements as superseded. The root README calls the plans directory historical even though it also contains current execution amendments. | Resuming work requires separating current contracts from historical records. | Add a compact current-state summary and active-plan index; label active and archived material consistently and retain the audit trail below. |
+| No checked-in `.github/workflows/` CI workflow is present; coding standards explicitly describe lint and formatting as local checks. | The inspected tree provides executable feedback but no repository-defined automatic PR verification. Hosting settings were not inspected. | Consider an authorized CI job for supported non-GUI build/tests, keeping separately authorized desktop qualification distinct. |
+| `test:unit` executes compiled JavaScript; the GUI bootstrap intentionally does not check whether existing compiled output is fresh. | Running checks without the documented build can verify stale output. | Keep build-first prerequisites prominent; consider a non-GUI verification entry point that builds before testing, without changing the explicit GUI build contract. |
+| GUI checks require a qualified macOS arm64 host, exact documented tooling, installed VS Code, a reserved unlocked desktop, and applicable profile/authentication setup. Local profiles, environments, and raw reports are ignored resources. | A fresh clone supplies instructions and code, but cannot reproduce every recorded run or inspect all raw evidence without environment preparation. | Maintain a concise fresh-host checklist and retain sanitized, durable evidence summaries for important qualification checkpoints. Preserve private state and manual authentication boundaries. |
+| Space-containing Python interpreter paths remain deferred; the changed aggregate bootstrap has non-GUI verification but no new actual GUI qualification in the inspected record. | Supported behavior has explicit limits; prior passing GUI runs do not qualify all later changes or paths. | Track these as qualification gaps with acceptance criteria and perform GUI checks only when separately authorized. |
+| No representative coding-agent evaluation suite or cost-per-verified-task record was identified in the inspected documentation and tooling. | Strong structure alone does not measure how reliably or efficiently an assistant uses it. | Evaluate a representative bounded change and record navigation friction, retries, intervention, time, and verified outcomes. |
+
+**Speaker emphasis:** Missing conventional filenames such as `CONTRIBUTING.md`, `docs/decisions/`, or `CHECKPOINT.md` are not themselves gaps: equivalent content exists. The improvement opportunities concern discoverability, context weight, repeatability, and evidence freshness.
+
+## 12. Key takeaways
+
+**Key message:** Repository structure, guidance, and executable feedback enable reliable agentic development.
+
+- **Make knowledge discoverable:** Provide clear entry points, module maps, and linked architecture and decisions.
+- **Keep guidance focused:** Use concise, layered instructions and separate stable rules from changing task state.
+- **Bound autonomous work:** Define scope, acceptance criteria, correction limits, and human validation gates.
+- **Verify observable results:** Provide executable checks and distinguish passing, failed, blocked, and unverified outcomes.
+- **Preserve continuity:** Record plans, decisions, progress, and evidence so another session can resume the work.
+- **Connect practices through workflows:** `ide-tester` demonstrates these capabilities with local skills, templates, and verification tooling; its gaps show why context weight, repeatability, and evidence freshness still need attention.
 
 **Definition to leave on screen:** An agent-friendly repository makes project knowledge discoverable, changes bounded, results verifiable, and work resumable.
 
