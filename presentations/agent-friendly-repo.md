@@ -12,9 +12,42 @@ Draft presentation outline
 
 This outline synthesizes the repository's practical guides. The suggested repository layout and case study assessment are proposed applications of those practices, rather than requirements for a particular assistant.
 
-**Running example:** `ide-tester`, a standalone TypeScript VS Code smoke tester, demonstrates these capabilities through its repository structure, instructions, verification tooling, and recorded development workflow. Section 11 includes a concrete mapping and improvement opportunities. Repository inspection baseline: 2026-10-25, commit `efae26b`. This is a structural assessment; build, unit, and GUI checks were not rerun for this presentation. Links to its files use the sibling checkout at `../../ide-tester/`.
+**Running example:** `ide-tester`, a standalone TypeScript VS Code smoke tester, demonstrates these capabilities through its repository structure, instructions, verification tooling, and recorded development workflow. Section 12 includes a concrete mapping and improvement opportunities. Repository inspection baseline: 2026-10-25, commit `efae26b`. This is a structural assessment; build, unit, and GUI checks were not rerun for this presentation. Links to its files use the sibling checkout at `../../ide-tester/`.
 
-## 1. The repository is part of the agent's working environment
+## 1. Open-loop and closed-loop workflows
+
+**Key message:** The defining difference is whether execution feedback informs the assistant's next action.
+
+- **Open-loop:** The assistant generates code or recommendations without automatically executing checks and using their results to revise the output.
+- **Closed-loop:** The assistant makes a change, runs relevant checks, evaluates the results, and uses that feedback to correct problems until acceptance criteria are met or a stopping condition is reached.
+
+| Dimension | Open-loop | Closed-loop |
+| --- | --- | --- |
+| Typical flow | Request → generate → hand off | Request → change → check → evaluate → correct or finish |
+| Useful for | Brainstorming, explanation, exploring approaches, initial drafts | Features, bug fixes, refactoring, and other changes requiring verification |
+| Evidence produced | A proposed answer or change; execution remains unverified | Results from checks actually performed, with their limits reported |
+| Repository support | Discoverable code, documentation, conventions, and constraints | The same context plus runnable checks, acceptance criteria, and useful diagnostics |
+| Trade-off | Less execution overhead; validation remains a subsequent responsibility | More execution and iteration; confidence depends on the quality and coverage of checks |
+| Human role | Evaluate the proposal and arrange verification when needed | Set scope and review gates, assess evidence, and resolve escalations |
+
+**Suggested visual:**
+
+```mermaid
+flowchart LR
+    O[Open-loop request] --> G[Generate proposal] --> H[Hand off]
+    C[Closed-loop request] --> I[Implement change] --> V[Run checks] --> E{Evaluate evidence}
+    E -->|Correctable failure within limits| I
+    E -->|Acceptance criteria met| R[Ready for required review]
+    E -->|Blocked or limit reached| S[Report and escalate]
+```
+
+**Speaker emphasis:** A task can begin with open-loop exploration and move into closed-loop implementation. Both workflows need clear scope and appropriate human oversight. Passing checks supports confidence within their coverage; it does not establish that every requirement has been satisfied.
+
+**Connection to the presentation:** An agent-friendly repository makes relevant knowledge accessible for either workflow and supplies the executable feedback and boundaries needed to close the loop reliably.
+
+**Source:** [Open-loop vs. closed-loop practices, sections 1–2](../open-vs-closed-loop-practices.md#1-understand-the-two-workflows).
+
+## 2. The repository is part of the agent's working environment
 
 **Key message:** Effective agentic development depends on the environment around the model.
 
@@ -27,7 +60,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Source:** [Planning practices, sections 1.2–1.3](../coding-assistant-planning-practices.md#12-understand-the-codebase-before-planning).
 
-## 2. Define agent-friendly through observable capabilities
+## 3. Define agent-friendly through observable capabilities
 
 **Key message:** Readiness can be assessed through what an assistant can do.
 
@@ -43,7 +76,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Sources:** [Context management, sections 1.1–1.5](../context-window-management.md#1-common-best-practices-across-all-three-assistants); [closed-loop practices](../open-vs-closed-loop-practices.md).
 
-## 3. Make project knowledge discoverable in layers
+## 4. Make project knowledge discoverable in layers
 
 **Key message:** Give the assistant a short route from the task to the necessary evidence.
 
@@ -56,7 +89,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Source:** [Context management, sections 1.1–1.5](../context-window-management.md#11-keep-context-focused-on-the-current-task).
 
-## 4. Keep persistent instructions concise and stable
+## 5. Keep persistent instructions concise and stable
 
 **Key message:** Instruction files should capture reusable project guidance and direct the assistant to deeper material.
 
@@ -70,7 +103,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Sources:** [Context management, section 1.3](../context-window-management.md#13-keep-persistent-instructions-concise) and [section 3.2](../context-window-management.md#32-keep-agentsmd-short-and-hierarchical); [cache guidance, section 1.2](../cache-token-guidance.md#12-keep-stable-instructions-consistent).
 
-## 5. Make verification an executable repository capability
+## 6. Make verification an executable repository capability
 
 **Key message:** A reliable verification environment is the central enabler of closed-loop development.
 
@@ -84,7 +117,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Source:** [Closed-loop practices, section 2](../open-vs-closed-loop-practices.md#2-common-good-practices) and [key recommendation](../open-vs-closed-loop-practices.md#5-key-recommendation).
 
-## 6. Define bounded autonomy and completion
+## 7. Define bounded autonomy and completion
 
 **Key message:** The repository and task specification should make the limits of autonomous execution explicit.
 
@@ -99,7 +132,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Sources:** [Closed-loop practices, sections 1–2](../open-vs-closed-loop-practices.md#1-understand-the-two-workflows); [planning practices, sections 1.7–1.9](../coding-assistant-planning-practices.md#17-support-closed-loop-execution-at-task-and-phase-levels).
 
-## 7. Make substantial work resumable
+## 8. Make substantial work resumable
 
 **Key message:** A fresh session should be able to reconstruct the current task from repository artifacts.
 
@@ -113,7 +146,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Sources:** [Planning practices, sections 1.10–1.11](../coding-assistant-planning-practices.md#110-maintain-the-plan-as-a-living-artifact); [context management, sections 1.4–1.5](../context-window-management.md#14-summarize-at-meaningful-milestones).
 
-## 8. Support bounded delegation when it adds value
+## 9. Support bounded delegation when it adds value
 
 **Key message:** Clear scope and evidence make work easier to delegate and integrate.
 
@@ -128,7 +161,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Source:** [Subagent practices, sections 1.1–1.9](../subagent-practices.md#1-common-best-practices-across-coding-assistants).
 
-## 9. Treat efficiency as a measured outcome
+## 10. Treat efficiency as a measured outcome
 
 **Key message:** Evaluate the cost of successfully verified work alongside quality.
 
@@ -142,7 +175,7 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 
 **Sources:** [Model selection, sections 1.2–1.3](../model-selection-guidance.md#12-use-a-tiered-escalation-strategy) and [section 1.8](../model-selection-guidance.md#18-evaluate-models-on-your-own-codebase); [cache guidance, sections 1.1–1.8](../cache-token-guidance.md#1-common-best-practices-across-all-three-assistants).
 
-## 10. Show what the capabilities look like in a repository
+## 11. Show what the capabilities look like in a repository
 
 **Key message:** A small set of maintained artifacts can make the workflow discoverable and repeatable.
 
@@ -170,9 +203,9 @@ repository/
 
 **Sources:** [Context management, sections 1.3–1.5](../context-window-management.md#13-keep-persistent-instructions-concise); [planning practices, section 4](../coding-assistant-planning-practices.md#4-recommended-implementation-plan-structure).
 
-## 11. Case study: An agent-friendly repository in practice
+## 12. Case study: An agent-friendly repository in practice
 
-### 11.1 Case study: `ide-tester` implements the example in its own layout
+### 12.1 Case study: `ide-tester` implements the example in its own layout
 
 **Example repository — `ide-tester`:** A TypeScript smoke-test harness that launches a dedicated VS Code instance and automates checks of editing, Git, Python, and Copilot Chat workflows. It uses isolated profiles and disposable workspaces, verifies observable results, and reports outcomes and cleanup status. Chat checks support a mock service or the real Copilot backend; GUI runs require an authorized, prepared desktop environment.
 
@@ -213,7 +246,7 @@ ide-tester/
 
 **Speaker emphasis:** `smoke/DEVELOPMENT_WORKFLOW.md` and `smoke/CODING_STANDARDS.md` provide the contribution guidance illustrated by `CONTRIBUTING.md`; `smoke/src/`, `smoke/tests/`, and `smoke/scripts/` provide the source, test, and tooling roles. Different filenames and nesting still fulfill the capabilities.
 
-### 11.2 Walk through one bounded change using the actual structure
+### 12.2 Walk through one bounded change using the actual structure
 
 **Key message:** The structure gives the assistant a concrete route from a request to reviewable evidence.
 
@@ -229,7 +262,7 @@ Example request: strengthen saved-file verification for an explicitly defined ed
 
 **Recorded evidence to discuss:** The [post-acceptance record for issue #50](../../ide-tester/docs/implementation-plans/issue-50-gui-suite-command.md#post-acceptance-change--explicit-build-step) reports a passing build and **252 non-GUI tests** after separating compilation from `test:gui`. It explicitly states that no new GUI run qualified that bootstrap change. This illustrates evidence limits as well as successful verification.
 
-### 11.3 Repository skills turn guidance into repeatable workflows
+### 12.3 Repository skills turn guidance into repeatable workflows
 
 **Key message:** The five skills under `.agents/skills/` give the assistant reusable procedures for moving from requirements to verified, reviewable delivery.
 
@@ -254,7 +287,7 @@ Each skill has a `SKILL.md` defining when to use it, which repository sources to
 
 **Speaker emphasis:** [The development workflow](../../ide-tester/smoke/DEVELOPMENT_WORKFLOW.md) connects these local skills and identifies optional external skills for grilling, TDD, debugging, and code review. Those external skills require availability in the agent session. The retained historical proposal must also be reviewed against current scope before generating new work.
 
-### 11.4 Gaps and limits: where `ide-tester` could become friendlier
+### 12.4 Gaps and limits: where `ide-tester` could become friendlier
 
 **Key message:** A repository can demonstrate agent-friendly practices while retaining friction and qualification gaps.
 
@@ -270,7 +303,7 @@ Each skill has a `SKILL.md` defining when to use it, which repository sources to
 
 **Speaker emphasis:** Missing conventional filenames such as `CONTRIBUTING.md`, `docs/decisions/`, or `CHECKPOINT.md` are not themselves gaps: equivalent content exists. The improvement opportunities concern discoverability, context weight, repeatability, and evidence freshness.
 
-## 12. Key takeaways
+## 13. Key takeaways
 
 **Key message:** Repository structure, guidance, and executable feedback enable reliable agentic development.
 
