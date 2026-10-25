@@ -24,10 +24,16 @@ This outline synthesizes the repository's practical guides. The suggested reposi
 **Typical progression:** Explore and propose → agree on a bounded change → implement, check, and correct → present evidence for review.
 
 **Suggested visual:**
-
+Open loop
 ```mermaid
-flowchart LR
+flowchart TB
     O[Open-loop request] --> G[Generate proposal] --> H[Hand off]
+    
+```
+
+Closed-loop
+```mermaid
+flowchart TB
     C[Closed-loop request] --> I[Implement change] --> V[Run checks] --> E{Evaluate evidence}
     E -->|Correctable failure within limits| I
     E -->|Acceptance criteria met| R[Ready for required review]
