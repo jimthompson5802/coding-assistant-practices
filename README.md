@@ -34,8 +34,17 @@ reusable policies.
   and evaluating models on your codebase.
 - [Subagent practices](subagent-practices.md): Covers bounded delegation,
   parallel work, context isolation, permissions, integration, and validation.
+- [Long-running sessions](long-duration-sessions.md): Covers risk-based
+  permissions, phase-based approval gates, autonomy contracts, bounded
+  execution, and checkpoints for preserving progress.
 - [Cache token guidance](cache-token-guidance.md): Explains prompt caching,
   preserving reusable context, measuring cache benefits, and caching costs.
+
+## Presentation
+
+- [Defining an agent-friendly repository](presentations/agent-friendly-repo.md):
+  A presentation outline connecting repository structure, instructions,
+  verification, and persistent task state to effective AI-assisted development.
 
 ## Running the token counters
 
